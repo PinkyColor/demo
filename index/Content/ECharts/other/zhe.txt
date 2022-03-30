@@ -1,0 +1,56 @@
+﻿
+                $.getJSON("/Counts/ashx/CountYjkhLine.ashx", { dts: sdt, dte: edt }, function (_result) {
+                    //console.log(_result);
+                    //if (_result.xAxis.length > 0) {
+                        var option = {
+                            title: {
+                                text: _result.title
+                            },
+                            tooltip: {
+                                trigger: 'axis',
+                                formatter: "{b}日<br>{a0}:￥{c0}<br>{a1}:￥{c1}"
+                            },
+                            legend: {
+                                data: ['营业额', '利润值']
+                            },
+                            grid: {
+                                left: '3%',
+                                right: '4%',
+                                bottom: '3%',
+                                containLabel: true
+                            },
+                            toolbox: {
+                                feature: {
+                                    saveAsImage: {}
+                                }
+                            },
+                            xAxis: {
+                                type: 'category',
+                                boundaryGap: false,
+                                data: _result.xAxis
+                            },
+                            yAxis: {
+                                type: 'value'
+                            },
+                            series: [
+                                {
+                                    name: '营业额',
+                                    type: 'line',
+                                    data: _result.xMoney
+                                },
+                                {
+                                    name: '利润值',
+                                    type: 'line',
+                                    data: _result.xLirun
+                                }
+                            ]
+                        };
+
+                        myChart1.setOption(option);
+                   // }
+                });
+              
+            }
+            loadMyChart();
+            
+         //EChart END

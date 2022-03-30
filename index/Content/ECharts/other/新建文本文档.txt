@@ -1,0 +1,53 @@
+﻿     $.getJSON("/admin/ashx/welcomexzdj.ashx", function (_result) {
+            // 基于准备好的dom，初始化echarts实例
+            var myChart1 = echarts.init(document.getElementById('echart_01'), "shine");
+            var option = {
+                title: {
+                    text: '新增单据数',
+                    subtext: '七天',
+                    x: 'center'
+                },
+                tooltip: {
+                    trigger: 'item',
+                    formatter: "{a} <br/>{b}: {c} ({d}%)"
+                },
+                legend: {
+                    orient: 'horizontal',
+                    left: 'center',
+                    bottom: 10,
+                    data: ['销售', '出库', '维修']
+                },
+                series: [
+                    {
+                        name: '一周单据数',
+                        type: 'pie',
+                        radius: ['30%', '90%'],
+                        avoidLabelOverlap: false,
+                        label: {
+                            normal: {
+                                show: false,
+                                position: 'center'
+                            },
+                            emphasis: {
+                                show: true,
+                                textStyle: {
+                                    fontSize: '18',
+                                    fontWeight: 'bold'
+                                }
+                            }
+                        },
+                        labelLine: {
+                            normal: {
+                                show: false
+                            }
+                        },
+                        data: _result
+                    }
+                ]
+            };
+            // 使用刚指定的配置项和数据显示图表。
+            myChart1.setOption(option);
+
+        });
+    }
+    /*新增单据数 END*/

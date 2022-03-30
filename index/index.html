@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>军安网迹平台</title>
+		<link rel="stylesheet" href="Content/css/lsd.css">
+		<script src="Content/js/jquery-3.4.1.min.js"></script>
+		<!--Echarts-->
+		<script src="Content/ECharts/jsv5/echarts.min.js"></script>
+		<script src="Content/ECharts/skins/blueTheme.js"></script>
+		<!--Echarts END-->
+	</head>
+
+	<body class="lsd">
+		<div class="lsd-main">
+			<!-- 头部 -->
+			<nav>
+				<div class="lsd-title">
+					军安网迹平台
+				</div>
+			</nav>
+			<!-- 返回 -->
+			<div class="main-back">
+				<div class="back">
+					返回主页
+				</div>
+			</div>
+			<!-- 页面主体 -->
+			<main>
+				<!-- 左边 -->
+				<div class="lsd-cols lsd-c1">
+					<!-- 左上 -->
+					<div class="lsd-c1-r1">
+						<div class="left-top-img">
+							<img src="Content/images/icon01.png"></img>
+						</div>
+						<div class="left-top-text">
+							<div>
+								<span>系统状态:</span>运行正常 <br>
+								<span>上次点验时间:</span>2021年6月10日 <br>
+								<span>管理员:</span>张三<br>
+							</div>
+							<div class="text">
+								本月共查验手机<i>26</i>部 <br>
+								命中<i>3486</i>次
+							</div>
+						</div>
+					</div>
+					<!-- 左下 -->
+					<div class="lsd-c1-r2">
+						<div class="r-tit">
+							<span>单位:</span> 合成第195旅1营
+						</div>
+						<!-- 左下雷达图 -->
+						<div class="c1-r1-panel">
+							<div class="chart" id="chart-c1-r2">
+
+							</div>
+						</div>
+					</div>
+
+				</div>
+				<!-- 右边 -->
+				<div class="lsd-cols lsd-c2">
+					<!-- 右上 -->
+					<div class="lsd-c2-r1 ">
+						<div class="lsd-c21 right-main">
+							<div class="r-tit right-top">
+								<span>点验手机</span>
+								<div>查看更多 ></div>
+							</div>
+							<!-- 右上列表 -->
+							<div class="c1-r1-panel">
+								<div class="right-list list-title">
+									<div>手机型号</div>
+									<div>手机号码</div>
+									<div>操作系统</div>
+									<div>持有人 </div>
+									<div>点验时间</div>
+									<div>共命中</div>
+								</div>
+								<div class="list-main">
+									<div class="right-list">
+										<div>华为</div>
+										<div> 14953261812</div>
+										<div>鸿蒙</div>
+										<div>薛飞倩</div>
+										<div> 2021/05/26 </div>
+										<div>92</div>
+									</div>
+									<div class="right-list">
+										<div>华为</div>
+										<div> 14953261812</div>
+										<div>鸿蒙</div>
+										<div>薛飞倩</div>
+										<div> 2021/05/26 </div>
+										<div>97</div>
+									</div>
+									<div class="right-list">
+										<div>华为</div>
+										<div> 14953261812</div>
+										<div>鸿蒙</div>
+										<div>薛飞倩</div>
+										<div> 2021/05/26 </div>
+										<div>21</div>
+									</div>
+									<div class="right-list">
+										<div>华为</div>
+										<div> 14953261812</div>
+										<div>鸿蒙</div>
+										<div>薛飞倩</div>
+										<div> 2021/05/26 </div>
+										<div>21</div>
+									</div>
+									<div class="right-list">
+										<div>华为</div>
+										<div> 14953261812</div>
+										<div>鸿蒙</div>
+										<div>薛飞倩</div>
+										<div> 2021/05/26 </div>
+										<div>21</div>
+									</div>
+									<div class="right-list">
+										<div>华为</div>
+										<div> 14953261812</div>
+										<div>鸿蒙</div>
+										<div>薛飞倩</div>
+										<div> 2021/05/26 </div>
+										<div>21</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<!-- 右下 -->
+					<div class="lsd-c2-r2">
+						<div class="r-tit right-top">
+							<span>点验结果</span>
+							<div class="select">单位选择:<select class="back">
+									<option value="195旅">合成第195旅</option>
+									<option value="195旅">合成第196旅</option>
+									<option value="195旅">合成第197旅</option>
+									<option value="195旅">合成第198旅</option>
+								</select>
+							</div>
+						</div>
+						<!-- 柱状图 -->
+						<div class="c1-r1-panel">
+							<div class="chart" id="chart-c2-r2">
+							</div>
+						</div>
+					</div>
+				</div>
+			</main>
+		</div>
+		<script>
+			function LSP() {
+				var t = this;
+				this.theme = "blueTheme";
+				this.echartList = [];
+				window.onresize = function() {
+					t.resize();
+				}
+			}
+			LSP.prototype = {
+				reader: function() {
+					this._readerC1R2();
+					this._readerC2R2();
+
+				},
+				//左侧底部
+				/**单位雷达图
+				 */
+				_readerC1R2: function() {
+					var dom = document.getElementById("chart-c1-r2");
+					var echart = echarts.init(dom, "blueTheme");
+					var option = {
+						// tooltip: {
+						// 	trigger: 'axis'
+						// },
+						tooltip: {
+							trigger: "item",
+							backgroundColor: 'rgba(0,0,0,0.6)',
+							extraCssText: "width:140px;",
+							textStyle: {
+								color: '#fff',
+							},
+						},
+						radar: {
+							// shape: 'circle',
+							indicator: [{
+									name: '可疑文件',
+									max: 100
+								},
+								{
+									name: '涉黄',
+									max: 100
+								},
+								{
+									name: ' 涉赌',
+									max: 100
+								},
+								{
+									name: '涉军装照',
+									max: 100
+								},
+								{
+									name: '涉军',
+									max: 100
+								},
+								{
+									name: '涉密',
+									max: 100
+								},
+								{
+									name: '涉境外 ',
+									max: 100
+								},
+								{
+									name: '涉贷 ',
+									max: 100
+								},
+								{
+									name: '涉邪教 ',
+									max: 100
+								},
+
+								{
+									name: '涉政 ',
+									max: 100
+								},
+
+								{
+									name: '涉恐 ',
+									max: 100
+								}
+							],
+							name: {
+								textStyle: {
+									color: 'rgba(66, 139, 212, 0.8)', //文字颜色
+
+								}
+							},
+							radius: 150,
+							axisLine: { // 坐标轴线
+								show: false // 默认显示，属性show控制显示与否
+							},
+							splitArea: {
+								show: true,
+								areaStyle: {
+									color: ['rgba(95, 110, 141, 1)', 'rgba(95, 110, 141, 0.9)',
+										'rgba(95, 110, 141, 0.8)', 'rgba(95, 110, 141, 0.7)',
+										'rgba(51, 70, 110, 0.5)',
+									], // 图表背景网格的颜色
+									// shadowColor: 'rgba(0, 0, 0, 0.2)',
+								}
+							},
+							splitLine: {
+								show: true,
+								lineStyle: {
+									width: 0,
+									color: 'rgba(66, 139, 212, 1)' // 图表背景网格线的颜色
+								}
+							}
+						},
+						series: [{
+							name: '合成第195旅1营',
+							type: 'radar',
+							symbol: "none", // 去掉图表中各个图区域的边框线拐点
+							tooltip: {
+								trigger: 'item'
+							},
+							// areaStyle: {},
+							data: [{
+								value: [60, 73, 85, 40, 85, 30, 60, 73, 85, 60, 73],
+								areaStyle: {
+
+									color: 'rgba(63, 103, 181, 0.6)' //区域颜色
+								}
+								// name: '预算分配（Allocated Budget）'
+							}, ]
+						}]
+					};
+					echart.setOption(option, true);
+					this.echartList.push(echart);
+				},
+				// 右下点验结果柱状图
+				_readerC2R2: function() {
+					var dom = document.getElementById("chart-c2-r2");
+					var echart = echarts.init(dom, "blueTheme");
+					var option = {
+						tooltip: {
+							trigger: "axis",
+							backgroundColor: 'rgba(0,0,0,0.6)',
+							extraCssText: "width:120px;",
+							textStyle: {
+								color: '#fff',
+							},
+							axisPointer: { // 坐标轴指示器，坐标轴触发有效
+									type: 'shadow' // 默认为直线，可选为：'line' | 'shadow'
+								}
+						},
+						grid: {
+							left: '3%',
+							right: '4%',
+							bottom: '3%',
+							containLabel: true
+						},
+						xAxis: [{
+							type: 'category',
+							data: ['一营', '二营', '三营', '四营', '五营', '六营', '七营', '八营', '九营', '十营', '十一营', '十二营'],
+							splitLine: {
+								show: false
+							},
+							axisTick: { //y轴刻度线
+								show: false
+							},
+							axisLine: { //这是x轴文字颜色
+								lineStyle: {
+									color: "#666",
+								}
+							},
+							axisLabel: {
+								show: true,
+								textStyle: {
+									color: '#2AD0FF'
+								}
+							}
+
+						}],
+						yAxis: [{
+							type: 'value',
+							axisTick: { //y轴刻度线
+								show: false
+							},
+							axisLine: { //y轴
+								show: false
+
+							},
+							splitLine: { // gird 区域中的分割线
+								show: true, // 是否显示
+								lineStyle: {
+									color: '#666',
+									width: 1,
+									type: 'dashed'
+								}
+							},
+							axisLabel: {
+								show: true,
+								textStyle: {
+									color: '#666'
+								}
+							}
+
+						}],
+						series: [
+
+							{
+								name: '涉黄',
+								type: 'bar',
+								stack: '点验结果',
+								emphasis: {
+									focus: 'series'
+								},
+								data: [120, 132, 101, 134, 90, 230, 210, 90, 230, 210, 230, 210],
+								itemStyle: {
+									normal: {
+										color: "#306de8"
+									}
+								},
+								barWidth: 40,
+							},
+							{
+								name: '涉毒',
+								type: 'bar',
+								stack: '点验结果',
+								emphasis: {
+									focus: 'series'
+								},
+								data: [220, 182, 191, 234, 290, 330, 310, 182, 191, 234, 290, 330],
+								itemStyle: {
+									normal: {
+										color: "#07c2b8"
+									}
+								}
+							},
+							{
+								name: '涉恐',
+								type: 'bar',
+								stack: '点验结果',
+								emphasis: {
+									focus: 'series'
+								},
+								data: [150, 232, 201, 154, 190, 330, 410, 150, 232, 201, 154, 190],
+								itemStyle: {
+									normal: {
+										color: "#f0bf07"
+									}
+								}
+
+							},
+
+						]
+					};
+					echart.setOption(option, true);
+					this.echartList.push(echart);
+				},
+
+				resize: function() {
+					$.each(this.echartList, function(ind, item) {
+						item.resize();
+					});
+				}
+			};
+
+			var lsp = new LSP();
+			lsp.reader();
+		</script>
+	</body>
+
+</html>
